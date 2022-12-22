@@ -49,6 +49,11 @@ iptables -A INPUT -p tcp -m state --state NEW -s 172.16.69.0/24 -d 172.16.69.11 
 iptables -L -n -v --line-number
 ```
 ![image](https://user-images.githubusercontent.com/91528234/209088589-4935c033-0ce5-49b3-ae87-39441168f9a6.png)
-
-
+## Kết quả 
+* Trước khi cấu hình tường lửa
+![image](https://user-images.githubusercontent.com/91528234/209089445-76dd1bd0-56b9-4ddc-9ebf-f97fa011c786.png)
+* ssh được vào server
+* Sau khi cấu hình tường lửa
+![image](https://user-images.githubusercontent.com/91528234/209089734-aa37a843-5116-4735-bd78-6376223b2116.png)
+* Rule cấu hình đã chặn client ssh vào server
 
