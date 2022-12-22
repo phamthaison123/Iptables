@@ -116,6 +116,14 @@ hoặc
 iptables -A FORWARD -i ens38 -o ens33 -j ACCEPT
 iptables -t nat -A POSTROUTING -o ens33 -s 10.10.10.0/24 -j MASQUERADE
 ```
+* Xem cấu hình rule vừa tạo
+![image](https://user-images.githubusercontent.com/91528234/209104029-f851cc60-6207-4647-ae8a-a33c8dae0833.png)
+
+## Kết quả
+![image](https://user-images.githubusercontent.com/91528234/209105338-8852eb0a-1ff2-4169-88a8-c17cd5ffbfe3.png)
+* Chưa cấu hình tường lửa không ping được mạng LAN
+![image](https://user-images.githubusercontent.com/91528234/209104260-ea6c7549-50f0-42f1-9b53-84b43048017d.png)
+* Client ping được đến đỉa chỉ của mạng LAN
 
 
 
