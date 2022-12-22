@@ -74,7 +74,10 @@ iptables -L -n -v --line-number
 ```
 net.ipv4.ip_forward = 1
 ```
-* Chạy lệnh sysctl -p /etc/sysctl.conf để kiểm tra cài đặt.
+* Chạy lệnh để kiểm tra cài đặt.
+```
+sysctl -p /etc/sysctl.conf
+```
 
 * Sau đó:
 ```
@@ -97,7 +100,7 @@ iptables -A INPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT
 ```
 * ACCEPT kết nối Ping với 5 lần mỗi phút từ mạng LAN.
 ```
-iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 5/m --limit-burst 5 \ -s 10.10.10.0/24 -d 10.10.10.11 -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 5/m --limit-burst 5 -s 10.10.10.0/24 -d 10.10.10.11 -j ACCEPT
 ```
 * ACCEPT kết nối SSH từ trong mạng LAN:
 ```
@@ -105,7 +108,7 @@ iptables -A INPUT -p tcp -s 10.10.10.0/24 -d 10.10.10.11 --dport 22 -m state --s
 ```
 * ACCEPT Outgoing gói tin qua Server từ network (10.10.10.0/24) và nat địa chỉ nguồn của gói tin.
 ```
-iptables -A FORWARD -i ens38 -o ens33 -j ACCEPT
+iptables -A FORWARD -i ens37 -o ens33 -j ACCEPT
 iptables -t nat -A POSTROUTING -o ens33 -s 10.10.10.0/24 -j SNAT --to-source 10.10.10.11
 ```
 hoặc
