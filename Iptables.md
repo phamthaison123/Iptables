@@ -44,4 +44,11 @@ iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 5/m --limit-
 ```
 iptables -A INPUT -p tcp -m state --state NEW -s 172.16.69.0/24 -d 172.16.69.11 --dport 22 -j ACCEPT
 ```
+* Xem cấu hình rule vừa tạo
+``` 
+iptables -L -n -v --line-number
+```
+![image](https://user-images.githubusercontent.com/91528234/209088589-4935c033-0ce5-49b3-ae87-39441168f9a6.png)
+
+
 
