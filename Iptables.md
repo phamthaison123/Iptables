@@ -113,7 +113,7 @@ iptables -t nat -A POSTROUTING -o ens33 -s 10.10.10.0/24 -j SNAT --to-source 10.
 ```
 hoặc
 ```
-iptables -A FORWARD -i ens38 -o ens33 -j ACCEPT
+iptables -A FORWARD -i ens37 -o ens33 -j ACCEPT
 iptables -t nat -A POSTROUTING -o ens33 -s 10.10.10.0/24 -j MASQUERADE
 ```
 * Xem cấu hình rule vừa tạo
