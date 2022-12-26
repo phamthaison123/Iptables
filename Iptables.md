@@ -212,6 +212,8 @@ iptables -t nat -A POSTROUTING -p tcp -d 10.10.10.51 --dport 22 -j SNAT --to-sou
  * truy cập http//:172.16.69.11
   ![image](https://user-images.githubusercontent.com/91528234/209497038-0e0c9792-b8a6-468f-8f0c-e23cbe4b86ac.png)
   *ssh vào `root@172.16.69.11`
+  
+  
   ![image](https://user-images.githubusercontent.com/91528234/209501952-29a53f0c-d3e1-4166-8cfc-d57d587fb19c.png)
 
   
