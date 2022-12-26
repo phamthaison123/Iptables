@@ -200,54 +200,8 @@ iptables -t nat -A PREROUTING -i ens33 -p tcp -d 172.16.69.11 --dport 443 -j DNA
 ![image](https://user-images.githubusercontent.com/91528234/209098477-8d2865c8-5a91-4ebb-bef6-9d28daa1b45b.png)
 ![image](https://user-images.githubusercontent.com/91528234/209098665-296ddd4a-0baf-4a6c-ae4c-a0fa1b01d46f.png)
 ## Cấu hình tường lửa cho Server với quyền root
-* Trên Server Kích hoạt iptables fordward packet, cần sửa file `/etc/sysctl.conf`:
-```
-net.ipv4.ip_forward = 1
-```
-* Chạy lệnh để kiểm tra cài đặt.
-```
-sysctl -p /etc/sysctl.conf
-```
-
-* Sau đó:
-```
-/etc/init.d/procps restart
-```
-* DROP INPUT, ACCEPT OUTPUT và DROP FORWARD:
-```
-iptables -P INPUT DROP
-iptables -P OUTPUT ACCEPT
-iptables -P FORWARD DROP
-```
-* ACCEPT Established Connection.
-```
-iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
-iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-```
-* ACCEPT kết nối từ loopback:
-```
-iptables -A INPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT
-```
-* ACCEPT kết nối Ping với 5 lần mỗi phút từ mạng LAN.
-```
-iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 5/m --limit-burst 5 -s 10.10.10.0/24 -d 10.10.10.11 -j ACCEPT
-```
-* ACCEPT kết nối SSH từ trong mạng LAN:
-```
-iptables -A INPUT -p tcp -s 10.10.10.0/24 -d 10.10.10.11 --dport 22 -m state --state NEW -j ACCEPT
-```
-* ACCEPT Outgoing gói tin qua Server từ network (10.10.10.0/24) và nat địa chỉ nguồn của gói tin.
-```
-iptables -A FORWARD -i ens37 -o ens33 -j ACCEPT
-iptables -t nat -A POSTROUTING -o ens33 -s 10.10.10.0/24 -j SNAT --to-source 10.10.10.11
-```
-hoặc
-```
-iptables -A FORWARD -i ens37 -o ens33 -j ACCEPT
-iptables -t nat -A POSTROUTING -o ens33 -s 10.10.10.0/24 -j MASQUERADE
-```
-* Xem cấu hình rule vừa tạo
-![image](https://user-images.githubusercontent.com/91528234/209104029-f851cc60-6207-4647-ae8a-a33c8dae0833.png)
+* Dựa vào `LAB3` bổ sung các câu lệnh sau
+* 
 
 
 
