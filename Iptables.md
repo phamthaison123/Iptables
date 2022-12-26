@@ -263,7 +263,7 @@ iptables -t nat -A POSTROUTING -o ens33 -s 10.10.20.0/24 -j SNAT --to-source 172
 ![image](https://user-images.githubusercontent.com/91528234/209524441-68783fb0-2799-470f-a749-c9f079dc1ee1.png)
 
 * Ping ra cổng có kết nối tới mạng
-* 
+ 
 ![image](https://user-images.githubusercontent.com/91528234/209536803-caa789bd-eb9a-409e-8987-9a91cd549919.png)
 
 
