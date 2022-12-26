@@ -215,8 +215,49 @@ iptables -t nat -A POSTROUTING -p tcp -d 10.10.10.51 --dport 22 -j SNAT --to-sou
   
   
   ![image](https://user-images.githubusercontent.com/91528234/209502477-a16aa61f-fe95-4c6e-b02c-1f07da6f4443.png)
+  # LAB2
+## Mô hình
+![image](https://user-images.githubusercontent.com/91528234/209519193-0c4f2e6e-2c2e-48f7-89d6-71bf48063cc2.png)
+## Tạo tường lửa ubuntu 16.04 với 3 dải ip `ens33` `ens37` `ens38` lần lượt `172.16.69.11` `10.10.10.11` `10.10.20.21`
+
 
   
+![image](https://user-images.githubusercontent.com/91528234/209520065-8ca833c6-1b22-44a9-a760-769917be86a9.png)
+## Tạo server ip `10.10.10.51`
+
+![image](https://user-images.githubusercontent.com/91528234/209522977-1e1d9b5a-eac1-409f-ae18-1404495ac958.png)
+## Tạo 2 client có ip `10.10.20.101` `10.10.20.102`
+![image](https://user-images.githubusercontent.com/91528234/209523095-03e86609-1e5b-4200-add5-953462a99884.png)
+![image](https://user-images.githubusercontent.com/91528234/209523110-350ff0b9-2f35-4ccd-8f16-e6e0d9e7a786.png)
+## Trên server
+* ACCEPT Established Connection.
+```
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
+* Tạo chain default DROP INPUT, ACCEPT OUTPUT, DROP FORWARD.
+```
+iptables -P INPUT DROP
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD DROP
+```
+* FORWARD gói tin đến port 80 trên ens33 sang port ens37 và đến port 80 trên Webserver.
+```
+iptables -A FORWARD -i ens33 -o ens37 -p tcp -d 10.10.10.51 --dport 80 -j ACCEPT
+iptables -t nat -A PREROUTING -i ens33 -p tcp -d 172.16.69.11 --dport 80 -j DNAT --to-destination 10.10.10.51
+iptables -t nat -A POSTROUTING -o ens37 -p tcp -d 10.10.10.51 --dport 80 -j SNAT --to-source 10.10.10.11
+  ```
+* Cho phép 1 máy (Client1) trong dải 10.10.20.0/24 quản trị Webserver.
+```
+iptables -A FORWARD -m state --state NEW -i ens38 -o ens37 -p tcp -s 10.10.20.101 -d 10.10.10.51 --dport 22 -j ACCEPT
+  ```
+* Cho phép các máy trong dải 10.10.20.0/24 kết nối ra Internet.
+```
+iptables -A FORWARD -m state --state NEW -i ens38 -o ens33 -j ACCEPT
+iptables -t nat -A POSTROUTING -o ens33 -s 10.10.20.0/24 -j SNAT --to-source 172.16.69.11
+```
+
+
 
 
 
