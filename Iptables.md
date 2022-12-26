@@ -134,47 +134,58 @@ iptables -t nat -A POSTROUTING -o ens33 -s 10.10.10.0/24 -j MASQUERADE
 ## Cài apache trên 2 server và ssl trên server 2
 ![image](https://user-images.githubusercontent.com/91528234/209312322-b8db491a-8270-493d-94f1-cdac2b759776.png)
 ![image](https://user-images.githubusercontent.com/91528234/209313497-81a20338-952a-4979-ba8d-34784cb1a7aa.png)
-Trên Server
+## Trên Server
 
-Kích hoạt iptables fordward packet sang máy khác sửa file /etc/sysctl.conf:
-
+* Kích hoạt iptables fordward packet sang máy khác sửa file `/etc/sysctl.conf`:
+```
 net.ipv4.ip_forward = 1
-Chạy lệnh sysctl -p /etc/sysctl.conf để kiểm tra cài đặt.
+```
+* Chạy lệnh sysctl -p /etc/sysctl.conf để kiểm tra cài đặt.
 
-Sau đó:
-
+* Sau đó:
+```
 /etc/init.d/procps restart
-ACCEPT SSH && DROP FROM CLIENT
-
+```
+* ACCEPT SSH && DROP FROM CLIENT
+```
 iptables -A INPUT -p tcp -s 10.10.10.0/24 -d 10.10.10.11 --dport 22 -m state --state NEW -j ACCEPT
 iptables -A INPUT -s 10.10.10.101 -j DROP
 ACCEPT Established Connection.
-
+```
+```
 iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-Accept loopback
-
+```
+* Accept loopback
+```
 iptables -A INPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT
-Tao chain default DROP INPUT, ACCEPT OUTPUT, DROP FORWARD.
-
+```
+* Tao chain default DROP INPUT, ACCEPT OUTPUT, DROP FORWARD.
+```
 iptables -P INPUT DROP
 iptables -P OUTPUT ACCEPT
 iptables -P FORWARD DROP
-Accept PING from 10.10.10.0
-
+```
+* Accept PING from 10.10.10.0
+```
 iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 5/m --limit-burst 5 -s 10.10.10.0/24 -d 10.10.10.11 -j ACCEPT
-Accept forward package ens37 –> ens33 port 80,443
-
+```
+* Accept forward package ens37 –> ens33 port 80,443
+```
 iptables -A FORWARD -p tcp --dst 10.10.10.51 --dport 80 -j ACCEPT
 iptables -A FORWARD -p tcp --dst 10.10.10.52 --dport 443 -j ACCEPT
-Rule DNAT ens33 –> ens37
-
-iptables -t nat -A PREROUTING -i ens33 -p tcp -d 172.16.69.11 --dport 80 \
-	-j DNAT --to-destination 10.10.10.51:80
-iptables -t nat -A PREROUTING -i ens33 -p tcp -d 172.16.69.11 --dport 443 \
-	-j DNAT --to-destination 10.10.10.52:443
+```
+* Rule DNAT ens33 –> ens37
+```
+iptables -t nat -A PREROUTING -i ens33 -p tcp -d 172.16.69.11 --dport 80 -j DNAT --to-destination 10.10.10.51:80
+iptables -t nat -A PREROUTING -i ens33 -p tcp -d 172.16.69.11 --dport 443 -j DNAT --to-destination 10.10.10.52:443
+```
   ## Sau khi cấu hình 
   ![image](https://user-images.githubusercontent.com/91528234/209315915-d3242497-77ba-4c81-81df-dc9167bf91b0.png)
+  * truy cập http//:172.16.69.11
+  ![image](https://user-images.githubusercontent.com/91528234/209497038-0e0c9792-b8a6-468f-8f0c-e23cbe4b86ac.png)
+* truy cập http//:172.16.69.11
+![image](https://user-images.githubusercontent.com/91528234/209497103-07c175e4-e631-49d4-9aa7-32dbfd743484.png)
 
 
 
