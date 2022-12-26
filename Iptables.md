@@ -140,7 +140,7 @@ iptables -t nat -A POSTROUTING -o ens33 -s 10.10.10.0/24 -j MASQUERADE
 ```
 net.ipv4.ip_forward = 1
 ```
-* Chạy lệnh sysctl -p /etc/sysctl.conf để kiểm tra cài đặt.
+* Chạy lệnh `sysctl -p /etc/sysctl.conf` để kiểm tra cài đặt.
 
 * Sau đó:
 ```
@@ -150,8 +150,9 @@ net.ipv4.ip_forward = 1
 ```
 iptables -A INPUT -p tcp -s 10.10.10.0/24 -d 10.10.10.11 --dport 22 -m state --state NEW -j ACCEPT
 iptables -A INPUT -s 10.10.10.101 -j DROP
-ACCEPT Established Connection.
 ```
+* ACCEPT Established Connection.
+
 ```
 iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
@@ -184,7 +185,7 @@ iptables -t nat -A PREROUTING -i ens33 -p tcp -d 172.16.69.11 --dport 443 -j DNA
   ![image](https://user-images.githubusercontent.com/91528234/209315915-d3242497-77ba-4c81-81df-dc9167bf91b0.png)
   * truy cập http//:172.16.69.11
   ![image](https://user-images.githubusercontent.com/91528234/209497038-0e0c9792-b8a6-468f-8f0c-e23cbe4b86ac.png)
-* truy cập http//:172.16.69.11
+* truy cập https//:172.16.69.11
 ![image](https://user-images.githubusercontent.com/91528234/209497103-07c175e4-e631-49d4-9aa7-32dbfd743484.png)
 
 
