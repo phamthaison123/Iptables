@@ -200,11 +200,21 @@ iptables -t nat -A PREROUTING -i ens33 -p tcp -d 172.16.69.11 --dport 443 -j DNA
 ![image](https://user-images.githubusercontent.com/91528234/209098477-8d2865c8-5a91-4ebb-bef6-9d28daa1b45b.png)
 ![image](https://user-images.githubusercontent.com/91528234/209098665-296ddd4a-0baf-4a6c-ae4c-a0fa1b01d46f.png)
 ## Cấu hình tường lửa cho Server với quyền root
-* Dựa vào `LAB3` bổ sung các câu lệnh sau
-* 
+* Dựa vào `LAB3` bổ sung các câu lệnh sau để lắng nghe cổng 22 trên server1
+```
+iptables -A FORWARD -p tcp -d 10.10.10.51 --dport 22 -j ACCEPT
+iptables -t nat -A PREROUTING -p tcp -d 172.16.69.11 --dport 22 -j DNAT --to-destination 10.10.10.51
+iptables -t nat -A POSTROUTING -p tcp -d 10.10.10.51 --dport 22 -j SNAT --to-source 10.10.10.11
+```
 
+## Kết quả
+![image](https://user-images.githubusercontent.com/91528234/209501487-7666fde3-d906-4d7a-8b88-01ef4fe3b1f0.png)
+ * truy cập http//:172.16.69.11
+  ![image](https://user-images.githubusercontent.com/91528234/209497038-0e0c9792-b8a6-468f-8f0c-e23cbe4b86ac.png)
+  *ssh vào `root@172.16.69.11`
+  ![image](https://user-images.githubusercontent.com/91528234/209501952-29a53f0c-d3e1-4166-8cfc-d57d587fb19c.png)
 
-
+  
 
 
 
