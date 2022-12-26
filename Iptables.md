@@ -256,6 +256,11 @@ iptables -A FORWARD -m state --state NEW -i ens38 -o ens37 -p tcp -s 10.10.20.10
 iptables -A FORWARD -m state --state NEW -i ens38 -o ens33 -j ACCEPT
 iptables -t nat -A POSTROUTING -o ens33 -s 10.10.20.0/24 -j SNAT --to-source 172.16.69.11
 ```
+## Kết quả
+* Sau khi cấu hình
+![image](https://user-images.githubusercontent.com/91528234/209524441-68783fb0-2799-470f-a749-c9f079dc1ee1.png)
+
+
 
 
 
